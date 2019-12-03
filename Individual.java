@@ -20,20 +20,19 @@ public class Individual {
 
     public void makeRandomIndividual() {
         int numCities = this.problem.getNumCities();
-
-        int startingCityId = RANDOM_GENERATOR.nextInt(numCities);
-
         Set<Integer> visited = new HashSet<Integer>();
-        visited.add(startingCityId);
+        int i = 0;
 
         while (visited.size() < numCities) {
-            for (int i = 0; i < tour.length; i++) {
                 int nextCity = RANDOM_GENERATOR.nextInt(numCities);
-                if (!visited.contains(nextCity)) {
-                    tour[i] = nextCity;
-                    visited.add(nextCity);
+
+                while(visited.contains(nextCity)) {
+                    nextCity = RANDOM_GENERATOR.nextInt(numCities);
                 }
-            }
+                
+                tour[i] = nextCity;
+                visited.add(nextCity);
+                i++;
         }
     }
 
