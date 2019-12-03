@@ -56,7 +56,7 @@ public class Problem {
      * 
      * @return the size of the Problem, which is the number of cities.
      */
-	public int getSize() {
+	public int getNumCities() {
 		return this.size;
 	}
 

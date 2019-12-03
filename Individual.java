@@ -4,7 +4,7 @@ import java.util.HashSet;
 
 public class Individual {
     
-    private int[] individualList;
+    private int[] tour;
 
     private Problem problem;
 
@@ -15,11 +15,10 @@ public class Individual {
     public Individual(Problem problem) {
         this.problem = problem;
 
-        individualList = new int[this.problem.getNumCities()];
+        tour = new int[this.problem.getNumCities()];
     }
 
     public void makeRandomIndividual() {
-        double[][] distanceMatrix = this.problem.getDistanceMatrix();
         int numCities = this.problem.getNumCities();
 
         int startingCityId = RANDOM_GENERATOR.nextInt(numCities);
@@ -28,10 +27,10 @@ public class Individual {
         visited.add(startingCityId);
 
         while (visited.size() < numCities) {
-            for (int i = 0; i < individualList.length; i++) {
+            for (int i = 0; i < tour.length; i++) {
                 int nextCity = RANDOM_GENERATOR.nextInt(numCities);
                 if (!visited.contains(nextCity)) {
-                    individualList[i] = nextCity;
+                    tour[i] = nextCity;
                     visited.add(nextCity);
                 } 
             }
@@ -40,9 +39,10 @@ public class Individual {
 
     public String toString() {
         String representation = "";
-        for (int i = 0; i < individualList.length; i++) {
-            representation += individualList[i] + ".";
+        for (int i = 0; i < tour.length; i++) {
+            representation += tour[i] + ".";
         }
+        return representation;
     }
 
 }
