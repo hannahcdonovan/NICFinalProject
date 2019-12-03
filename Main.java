@@ -1,5 +1,13 @@
+import java.util.List;
+import java.util.ArrayList;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.Reader;
+
 public class Main {
-    
+
     /**
 	 * Helper method to read in the file and problem information.
 	 * 
@@ -52,6 +60,7 @@ public class Main {
     }
     
     public static void main(String[] args) {
-        System.out.println("test");
+        List<City> cityList = getCityList("ts225.tsp");
+        System.out.println(cityList);
     }
 }
