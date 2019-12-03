@@ -32,9 +32,13 @@ public class Individual {
                 if (!visited.contains(nextCity)) {
                     tour[i] = nextCity;
                     visited.add(nextCity);
-                } 
+                }
             }
         }
+    }
+
+    public int[] getTour() {
+        return tour;
     }
 
     public String toString() {

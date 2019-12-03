@@ -61,6 +61,13 @@ public class Main {
     
     public static void main(String[] args) {
         List<City> cityList = getCityList("ts225.tsp");
-        System.out.println(cityList);
+        // System.out.println(cityList);
+        Problem prob = new Problem(cityList);
+        // System.out.println("Problem numCities: " + prob.getNumCities());
+        Individual ind = new Individual(prob);
+        ind.makeRandomIndividual();
+        // System.out.println("Individual cities" + ind.getTour().length);
+        System.out.print(ind.toString());
+
     }
 }
