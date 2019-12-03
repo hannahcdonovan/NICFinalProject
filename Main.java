@@ -63,11 +63,23 @@ public class Main {
         List<City> cityList = getCityList("ts225.tsp");
         // System.out.println(cityList);
         Problem prob = new Problem(cityList);
-        // System.out.println("Problem numCities: " + prob.getNumCities());
-        Individual ind = new Individual(prob);
-        ind.makeRandomIndividual();
-        // System.out.println("Individual cities" + ind.getTour().length);
-        System.out.print(ind.toString());
+        int numCities = prob.getNumCities();
+        // Individual ind = new Individual(prob);
+        // Individual randInd = ind.makeRandomIndividual();
+        // System.out.print(randInd);
+        Population pop = new Population(5);
+        pop.generateRandomPopulation(prob);
+        // System.out.println(pop.getIndividualList());
 
+        Individual parent1 = pop.getIndividualList().get(0);
+        System.out.println("Parent 1: " + parent1);
+        Individual parent2 = pop.getIndividualList().get(1);
+        System.out.println("Parent 2: " + parent2);
+
+
+        GeneticAlgorithm ga = new GeneticAlgorithm(5, prob, numCities, "selection", 0.1, 0.1, 10, pop);
+
+        Individual offspring = ga.heuristicCrossover(parent1, parent2);
+        System.out.println("Offspring: " + offspring);
     }
 }
