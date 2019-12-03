@@ -44,4 +44,17 @@ public class Problem {
 			}
 		}
 	}
+
+
+	public int getSize() {
+		return this.size;
+	}
+
+	public List<City> getCityList() {
+		return this.cityList;
+	}
+
+	public double getDistance(int city1, int city2) {
+		return this.distances[city1][city2];
+	}
 }
