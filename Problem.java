@@ -19,6 +19,11 @@ public class Problem {
 		this.calculateDistances();
 	}
 
+
+	/**
+     * Calculates distances and populates the distances matrix with appropriate heuristic information.
+     * 
+     */
 	public void calculateDistances() {
 
 		for (int i = 0; i < this.cityList.size(); i++) {
@@ -46,14 +51,31 @@ public class Problem {
 	}
 
 
+    /**
+     * Problem size getter.
+     * 
+     * @return the size of the Problem, which is the number of cities.
+     */
 	public int getSize() {
 		return this.size;
 	}
 
+
+    /**
+     * cityList getter.
+     * 
+     * @return the List containing all of the cities in the problem.
+     */
 	public List<City> getCityList() {
 		return this.cityList;
 	}
 
+
+    /**
+     * Distance getter.
+     * 
+     * @return a double representing the distance between the two given city numbers according to the heuristic.
+     */
 	public double getDistance(int city1, int city2) {
 		return this.distances[city1][city2];
 	}
