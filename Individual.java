@@ -35,6 +35,7 @@ public class Individual {
             randIndividual.getTour().add(nextCity);
             visited.add(nextCity);
         }
+        randIndividual.setFitness();
         return randIndividual;
     }
 
@@ -55,6 +56,10 @@ public class Individual {
         this.fitness = calculatedFitness;
     }
 
+    public double getFitness() {
+        return this.fitness;
+    }
+
     public List<Integer> getTour() {
         return tour;
     }
@@ -69,7 +74,8 @@ public class Individual {
     }
 
     public void setTour(List<Integer> newTour) {
-        tour = newTour;
+        this.tour = newTour;
+        this.setFitness();
     }
 
     public String toString() {

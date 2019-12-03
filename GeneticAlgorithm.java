@@ -2,6 +2,7 @@ import java.util.Random;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class GeneticAlgorithm {
 
@@ -76,6 +77,16 @@ public class GeneticAlgorithm {
         List<Integer> tour1 = parent1.getTour();
         List<Integer> tour2 = parent2.getTour();
 
+        //rotate lists to make the starting city first for both 
+        int tour1RotationAmount = tour1.size() - tour1.indexOf(startingCity);
+        int tour2RotationAmount = tour2.size() - tour2.indexOf(startingCity);
+
+        Collections.rotate(tour1, tour1RotationAmount);
+        Collections.rotate(tour2, tour2RotationAmount);
+
+        System.out.println("parent 1 - " + parent1 +  " fitness -> " + parent1.getFitness());
+        System.out.println("parent 2 - " + parent2 +  " fitness -> " + parent2.getFitness());
+
         // Update the starting cities in both parents tours
         moveStartingCity(tour1, startingCity);
         moveStartingCity(tour2, startingCity);
@@ -85,33 +96,37 @@ public class GeneticAlgorithm {
         
         List<Integer> offspringTour = offspring.getTour();
 
-        int i = 2;
-        int j = 2;
+        int i = 1;
+        int j = 1;
+        int offspringCounter = 1;
 
         while ((i < offspringTour.size()) && (j < offspringTour.size())) {
             if (offspringTour.contains(tour1.get(i)) && offspringTour.contains(tour2.get(j))) {
                 i++;
                 j++;
             } else if (offspringTour.contains(tour1.get(i))) {
-                concatenate(tour2, j, offspringTour);
+                offspringTour.set(offspringCounter, tour2.get(j));
                 j++;
+                offspringCounter++;
             } else if (offspringTour.contains(tour2.get(j))) {
-                concatenate(tour1, i, offspringTour);
+                offspringTour.set(offspringCounter, tour1.get(i));
                 i++;
+                offspringCounter++;
             } else {
                 int lastCity = offspringTour.get(numCities - 1);
                 if (this.problem.getDistance(lastCity, tour1.get(i)) < this.problem.getDistance(lastCity, tour2.get(j))) {
-                    concatenate(tour1, i, offspringTour);
+                    offspringTour.set(offspringCounter, tour1.get(i));
                     i++;
+                    offspringCounter++;
                 } else {
-                    concatenate(tour2, j, offspringTour);
+                    offspringTour.set(offspringCounter, tour2.get(j));
                     j++;
+                    offspringCounter++;
                 }
             }
         }
 
         offspring.setTour(offspringTour);
-
         return offspring;
 
     }
@@ -120,14 +135,6 @@ public class GeneticAlgorithm {
         int startingCityIndex = tour.indexOf(startingCity);
         tour.remove(startingCityIndex);
         tour.add(0, startingCity);
-    }
-
-    private static void concatenate(List<Integer> tour, int startingIndex, List<Integer> offspringTour) {
-        int cityVal = -1;
-        for (int i = startingIndex; i > 0; i--) {
-            cityVal = tour.get(i);
-            offspringTour.set(i, cityVal);
-        }
     }
 
 }
