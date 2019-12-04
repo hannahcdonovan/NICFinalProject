@@ -3,6 +3,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.lang.Math;
+import java.util.Collections;
 
 public class GeneticAlgorithm {
 
@@ -64,6 +66,49 @@ public class GeneticAlgorithm {
         this.mutationProb = mutationProb;
         this.iterations = iterations;
         this.currentPopulation = currentPopulation;
+    }
+
+    public void boltzmannSelection() {
+        List<Individual> offspring = this.currentPopulation.getIndividualList();
+        Population newPop = new Population(offspring.size());
+        double totalFitness = 0.0;
+
+        // Calculate total fitness
+        for (int i = 0; i < offspring.size(); i++) {
+            totalFitness += offspring.get(i).evalAndSetFitness();
+        }
+
+        // evaluate the normalizing denominator
+        double denom = Math.exp(totalFitness);
+
+        int j = 0;
+        while (newPop.size() < this.currentPopulation.size()) {
+            double probabilityPicker = RANDOM_GENERATOR.nextDouble();
+            double numerator = Math.exp(offspring.get(j).evalAndSetFitness());
+            if (probabilityPicker < (numerator / denom)) {
+                newPop.addIndividual(offspring.get(j));
+            }
+            j++;
+        }
+    }
+
+    public void tournamentSelection() {
+        List<Individual> offspring = this.currentPopulation.getIndividualList();
+        Population newPop = new Population(offspring.size());
+        int j = 0;
+
+        while (j < 2) {
+            for (int i = 0; i < offspring.size() - 1; i++) {
+                if (offspring.get(i).evalAndSetFitness() <= offspring.get(i + 1).evalAndSetFitness()) {
+                    newPop.addIndividual(offspring.get(i));
+                } else {
+                    newPop.addIndividual(offspring.get(i + 1));
+                }
+            }
+            j++;
+        }
+        this.currentPopulation = newPop;
+        
     }
 
     /**

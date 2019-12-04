@@ -35,11 +35,11 @@ public class Individual {
             randIndividual.getTour().add(nextCity);
             visited.add(nextCity);
         }
-        randIndividual.setFitness();
+        randIndividual.evalAndSetFitness();
         return randIndividual;
     }
 
-    public double evalFitness() {
+    public double evalAndSetFitness() {
         double fitnessTotal = 0.0;
         int numCities = this.problem.getNumCities();
 
@@ -47,13 +47,9 @@ public class Individual {
             fitnessTotal += this.problem.getDistance(tour.get(i), tour.get(i+1));
         }
         fitnessTotal += this.problem.getDistance(tour.get(numCities - 1), tour.get(0));
+        this.fitness = fitnessTotal;
 
         return fitnessTotal;
-    }
-
-    public void setFitness() {
-        double calculatedFitness = this.evalFitness();
-        this.fitness = calculatedFitness;
     }
 
     public double getFitness() {
@@ -75,7 +71,7 @@ public class Individual {
 
     public void setTour(List<Integer> newTour) {
         this.tour = newTour;
-        this.setFitness();
+        this.evalAndSetFitness();
     }
 
     public String toString() {

@@ -22,4 +22,12 @@ public class Population {
     public List<Individual> getIndividualList() {
         return individualList;
     }
+
+    public void addIndividual(Individual ind) {
+        individualList.add(ind);
+    }
+
+    public int size() {
+        return this.popSize;
+    }
 }
