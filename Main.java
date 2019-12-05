@@ -72,7 +72,7 @@ public class Main {
         Individual parent1 = new Individual(prob);
         parent1 = parent1.makeRandomIndividual();
         System.out.println("Parent 1: " + parent1);
-        
+
         Individual parent2 = new Individual(prob);
         parent2 = parent2.makeRandomIndividual();
         System.out.println("Parent 2: " + parent2);
@@ -81,10 +81,12 @@ public class Main {
         GeneticAlgorithm ga = new GeneticAlgorithm(5, prob, numCities, "selection", 0.1, 0.1, 10);
 
         Individual offspring = ga.heuristicCrossover(parent1, parent2);
-        System.out.println("Offspring: " + offspring + " fitness -> " + offspring.getFitness());
+        System.out.println("Offspring: " + offspring);
 
         offspring.mutate(0.01);
-        System.out.println("Offspring: " + offspring + " fitness -> " + offspring.getFitness());
+        System.out.println("Offspring: " + offspring);
+
+        ga.optimize();
 
     }
 }

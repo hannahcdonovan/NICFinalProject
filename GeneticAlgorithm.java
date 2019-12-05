@@ -140,6 +140,32 @@ public class GeneticAlgorithm {
     }
 
     /**
+     * Performs crossover of parent popultion to create popSize offspring. The parents and the 
+     * new offspring will be added to the parentAndOffspringPopulation. 
+     */
+    public void performParentCrossover() {
+
+        List<Individual> newOffSpring = new ArrayList<Individual>();
+
+        while(newOffSpring.size() < this.popSize){
+
+            double randDub = RANDOM_GENERATOR.nextDouble();
+            if(randDub < this.crossoverProb) {
+                Individual parent1 = this.currentParentPopulation.getIndividual(RANDOM_GENERATOR.nextInt(popSize));
+                Individual parent2 = this.currentParentPopulation.getIndividual(RANDOM_GENERATOR.nextInt(popSize));
+
+                Individual offspring = this.heuristicCrossover(parent1, parent2);
+                newOffSpring.add(offspring);
+            }
+        }
+
+        this.parentAndOffspringPopulation.resetList();
+        this.parentAndOffspringPopulation.addListIndividuals(newOffSpring);
+        this.parentAndOffspringPopulation.addListIndividuals(this.currentParentPopulation.getIndividualList());
+
+    }
+
+    /**
      * Heuristic Crossover
      */
     public Individual heuristicCrossover(Individual parent1, Individual parent2) {
@@ -157,8 +183,8 @@ public class GeneticAlgorithm {
         Collections.rotate(tour1, tour1RotationAmount);
         Collections.rotate(tour2, tour2RotationAmount);
 
-        System.out.println("parent 1 - " + parent1 +  " fitness -> " + parent1.getFitness());
-        System.out.println("parent 2 - " + parent2 +  " fitness -> " + parent2.getFitness());
+        //System.out.println("parent 1 - " + parent1 +  " fitness -> " + parent1.getFitness());
+        //System.out.println("parent 2 - " + parent2 +  " fitness -> " + parent2.getFitness());
 
         // Update the starting cities in both parents tours
         moveStartingCity(tour1, startingCity);
@@ -208,6 +234,22 @@ public class GeneticAlgorithm {
         int startingCityIndex = tour.indexOf(startingCity);
         tour.remove(startingCityIndex);
         tour.add(0, startingCity);
+    }
+
+
+    public void optimize() {
+        System.out.println(this.currentParentPopulation);
+        System.out.println(this.parentAndOffspringPopulation);
+
+        this.performParentCrossover();
+        System.out.println("** Parent Population **");
+        System.out.println(this.currentParentPopulation);
+
+        System.out.println("** Parent and Offspring Population*");
+        System.out.println(this.parentAndOffspringPopulation);
+
+
+
     }
 
 }

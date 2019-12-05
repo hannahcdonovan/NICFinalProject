@@ -105,6 +105,7 @@ public class Individual {
         for (int i = 0; i < this.problem.getNumCities(); i++) {
             representation += tour.get(i) + ".";
         }
+        representation += " -> " + this.fitness;
         return representation;
     }
 
