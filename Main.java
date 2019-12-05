@@ -68,6 +68,7 @@ public class Main {
         // Individual randInd = ind.makeRandomIndividual();
         // System.out.print(randInd);
         Population pop = new Population(5);
+        Population pop2 = new Population(10);
         pop.generateRandomPopulation(prob);
         // System.out.println(pop.getIndividualList());
 
@@ -77,7 +78,7 @@ public class Main {
         System.out.println("Parent 2: " + parent2);
 
 
-        GeneticAlgorithm ga = new GeneticAlgorithm(5, prob, numCities, "selection", 0.1, 0.1, 10, pop);
+        GeneticAlgorithm ga = new GeneticAlgorithm(5, prob, numCities, "selection", 0.1, 0.1, 10, pop, pop2);
 
         Individual offspring = ga.heuristicCrossover(parent1, parent2);
         System.out.println("Offspring: " + offspring + " fitness -> " + offspring.getFitness());

@@ -13,9 +13,10 @@ public class Population {
     }
 
     public void generateRandomPopulation(Problem problem) {
-        Individual individual = new Individual(problem);
+        Individual dummy = new Individual(problem);
         for (int i = 0; i < this.popSize; i++) {
-            individualList.add(individual.makeRandomIndividual());
+            Individual ind = dummy.makeRandomIndividual();
+            individualList.add(ind);
         }
     }
 

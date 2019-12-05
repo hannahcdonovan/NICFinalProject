@@ -46,7 +46,32 @@ public class GeneticAlgorithm {
     /**
      * The current population.
      */
-    private Population currentPopulation;
+    private Population currentParentPopulation;
+
+
+    /**
+    * The population of offspring and parents used for PSO 
+    */
+    private Population parentAndOffspringPopulation;
+
+            //DIFFERENCE BETWEEN CURRENTPOPULATION AND PSOPOPULATION
+    // have currentPopulation which is size N
+    // have psoPopulation which will be size 2N (N parents + N offspring)
+    // do PSO on the psoPopulation
+    // then SELECT on the psoPopulation 
+    // the resulting population should then be size N -> use this as the new "current population"
+    // repeat the process 
+
+
+
+            //OVERALL WHAT WE WANT TO DO 
+    //mate the individuals in the currentPopulation
+    //add parents and these offspring to psoPopulation
+    //run PSO on psoPopulation
+    //do mutation on the psoPopulation
+    //select from the psoPopulation to get N individuals
+    //this becomes the new currentPopulation
+    //repeat the process
 
     /**
      * The best fitness we find after optimize
@@ -57,7 +82,7 @@ public class GeneticAlgorithm {
 
     public GeneticAlgorithm(int popSize, Problem problem, int numCities, String selectionType, 
                             double crossoverProb, double mutationProb, int iterations,
-                            Population currentPopulation) {
+                            Population currentParentPopulation, Population parentAndOffspringPopulation) {
         this.popSize = popSize;
         this.problem = problem;
         this.numCities = numCities;
@@ -65,41 +90,44 @@ public class GeneticAlgorithm {
         this.crossoverProb = crossoverProb;
         this.mutationProb = mutationProb;
         this.iterations = iterations;
-        this.currentPopulation = currentPopulation;
+        this.currentParentPopulation = currentParentPopulation;
+        this.parentAndOffspringPopulation = parentAndOffspringPopulation;
     }
 
-    public void boltzmannSelection() {
-        List<Individual> offspring = this.currentPopulation.getIndividualList();
+    public Population boltzmannSelection() {
+        List<Individual> offspring = this.parentAndOffspringPopulation.getIndividualList();
         Population newPop = new Population(offspring.size());
         double totalFitness = 0.0;
 
         // Calculate total fitness
         for (int i = 0; i < offspring.size(); i++) {
-            totalFitness += offspring.get(i).evalAndSetFitness();
+            totalFitness += offspring.get(i).getFitness();
         }
 
         // evaluate the normalizing denominator
         double denom = Math.exp(totalFitness);
 
         int j = 0;
-        while (newPop.size() < this.currentPopulation.size()) {
+        while (newPop.size() < this.parentAndOffspringPopulation.size()) {
             double probabilityPicker = RANDOM_GENERATOR.nextDouble();
-            double numerator = Math.exp(offspring.get(j).evalAndSetFitness());
+            double numerator = Math.exp(offspring.get(j).getFitness());
             if (probabilityPicker < (numerator / denom)) {
                 newPop.addIndividual(offspring.get(j));
             }
             j++;
         }
+        return newPop;
     }
 
-    public void tournamentSelection() {
-        List<Individual> offspring = this.currentPopulation.getIndividualList();
+
+    public Population tournamentSelection() {
+        List<Individual> offspring = this.parentAndOffspringPopulation.getIndividualList();
         Population newPop = new Population(offspring.size());
         int j = 0;
 
         while (j < 2) {
             for (int i = 0; i < offspring.size() - 1; i++) {
-                if (offspring.get(i).evalAndSetFitness() <= offspring.get(i + 1).evalAndSetFitness()) {
+                if (offspring.get(i).getFitness() <= offspring.get(i + 1).getFitness()) {
                     newPop.addIndividual(offspring.get(i));
                 } else {
                     newPop.addIndividual(offspring.get(i + 1));
@@ -107,7 +135,7 @@ public class GeneticAlgorithm {
             }
             j++;
         }
-        this.currentPopulation = newPop;
+        return newPop;
         
     }
 
