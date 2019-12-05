@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.lang.Math;
-import java.util.Collections;
 
 public class GeneticAlgorithm {
 
@@ -108,11 +107,13 @@ public class GeneticAlgorithm {
         double denom = Math.exp(totalFitness);
 
         int j = 0;
-        while (newPop.size() < this.parentAndOffspringPopulation.size()) {
+        int counter = 0;
+        while (counter < this.currentParentPopulation.size()) {
             double probabilityPicker = RANDOM_GENERATOR.nextDouble();
             double numerator = Math.exp(offspring.get(j).getFitness());
             if (probabilityPicker < (numerator / denom)) {
                 newPop.addIndividual(offspring.get(j));
+                counter++;
             }
             j++;
         }
@@ -120,23 +121,52 @@ public class GeneticAlgorithm {
     }
 
 
+    public Population rankSelection() {
+        List<Individual> inds = this.parentAndOffspringPopulation.getIndividualList();
+        Population newPop = new Population(this.popSize);
+
+        Collections.sort(inds);
+
+        System.out.println(this.parentAndOffspringPopulation);
+
+        List<Individual> probScaleList = new ArrayList<Individual>();
+
+        for(int i = 0; i < inds.size(); i++){
+            for(int j = 0; j < i + 1; j++) {
+                probScaleList.add(inds.get(i));
+            }
+        }
+
+        List<Individual> newIndsList = new ArrayList<Individual>();
+
+        while(newIndsList.size() < this.popSize) {
+            int randIndex = RANDOM_GENERATOR.nextInt(probScaleList.size());
+            Individual randIndividual = probScaleList.get(randIndex);
+                
+            if(!newIndsList.contains(randIndividual)) {
+                newIndsList.add(randIndividual);
+            }
+        }
+        newPop.addListIndividuals(newIndsList);
+        return newPop;
+
+    }
+
+
     public Population tournamentSelection() {
         List<Individual> offspring = this.parentAndOffspringPopulation.getIndividualList();
-        Population newPop = new Population(offspring.size());
-        int j = 0;
+        Population newPop = new Population(this.popSize);
 
-        while (j < 2) {
-            for (int i = 0; i < offspring.size() - 1; i++) {
-                if (offspring.get(i).getFitness() <= offspring.get(i + 1).getFitness()) {
-                    newPop.addIndividual(offspring.get(i));
-                } else {
-                    newPop.addIndividual(offspring.get(i + 1));
-                }
+        Collections.shuffle(offspring);
+
+        for (int i = 0; i < offspring.size() - 1; i += 2) {
+            if (offspring.get(i).getFitness() <= offspring.get(i + 1).getFitness()) {
+                newPop.addIndividual(offspring.get(i));
+            } else {
+                newPop.addIndividual(offspring.get(i + 1));
             }
-            j++;
         }
         return newPop;
-        
     }
 
     /**
@@ -247,6 +277,17 @@ public class GeneticAlgorithm {
 
         System.out.println("** Parent and Offspring Population*");
         System.out.println(this.parentAndOffspringPopulation);
+
+        Population newPop = this.tournamentSelection();
+        System.out.println("** TS Selected Population **");
+        System.out.println(newPop);
+
+
+        Population newPop2 = this.rankSelection();
+        System.out.println("** RS Selected Population **");
+        System.out.println(newPop2);
+
+
 
 
 

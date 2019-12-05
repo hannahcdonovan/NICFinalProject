@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Individual {
+public class Individual implements Comparable<Individual> {
     
     private List<Integer> tour;
 
@@ -107,6 +107,10 @@ public class Individual {
         }
         representation += " -> " + this.fitness;
         return representation;
+    }
+
+    public int compareTo(Individual otherInd) {
+        return (int) Math.round(otherInd.fitness - this.fitness); 
     }
 
 
