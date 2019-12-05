@@ -81,17 +81,17 @@ public class GeneticAlgorithm {
     private static Random RANDOM_GENERATOR = new Random();
 
     public GeneticAlgorithm(int popSize, Problem problem, int numCities, String selectionType, 
-                            double crossoverProb, double mutationProb, int iterations,
-                            Population currentParentPopulation, Population parentAndOffspringPopulation) {
+                            double crossoverProb, double mutationProb, int iterations) {
         this.popSize = popSize;
         this.problem = problem;
-        this.numCities = numCities;
+        this.numCities = this.problem.getNumCities();
         this.selectionType = selectionType;
         this.crossoverProb = crossoverProb;
         this.mutationProb = mutationProb;
         this.iterations = iterations;
-        this.currentParentPopulation = currentParentPopulation;
-        this.parentAndOffspringPopulation = parentAndOffspringPopulation;
+        this.currentParentPopulation = new Population(popSize);
+        this.currentParentPopulation.generateRandomPopulation(this.problem);
+        this.parentAndOffspringPopulation = new Population(popSize * 2);
     }
 
     public Population boltzmannSelection() {
