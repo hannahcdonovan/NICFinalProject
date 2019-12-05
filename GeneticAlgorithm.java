@@ -278,6 +278,8 @@ public class GeneticAlgorithm {
         System.out.println("** Parent and Offspring Population*");
         System.out.println(this.parentAndOffspringPopulation);
 
+
+
         Population newPop = this.tournamentSelection();
         System.out.println("** TS Selected Population **");
         System.out.println(newPop);

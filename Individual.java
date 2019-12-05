@@ -15,9 +15,12 @@ public class Individual implements Comparable<Individual> {
 
     private double fitness;
 
+    private Neighborhood neighborhood;
+
     public Individual(Problem problem) {
         this.problem = problem;
         tour = new ArrayList<Integer>();
+        this.neighborhood = new Neighborhood(new ArrayList<Individual>());
 
     }
 
@@ -111,6 +114,20 @@ public class Individual implements Comparable<Individual> {
 
     public int compareTo(Individual otherInd) {
         return (int) Math.round(otherInd.fitness - this.fitness); 
+    }
+
+    public Individual copyIndividual() {
+        Individual newInd = new Individual(this.problem);
+        newInd.setTour(this.tour);
+        return newInd;
+    }
+
+    public void setNeighborhood(Neighborhood newNeighborhood) {
+        this.neighborhood = newNeighborhood;
+    }
+
+    public Neighborhood getNeighborhood() {
+        return this.neighborhood;
     }
 
 
