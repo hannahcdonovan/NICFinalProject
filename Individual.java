@@ -52,6 +52,32 @@ public class Individual {
         return fitnessTotal;
     }
 
+
+
+    /**
+     * For some probability at each city in the Individual's tour, the city may be swapped
+     * with some other random city. This will add some randomness but will also maintain the 
+     * integrity of the tour. 
+     */
+    public void mutate(double probability) {
+
+        for(int i = 0; i < this.problem.getNumCities(); i++) {
+            double randDub = RANDOM_GENERATOR.nextDouble();
+
+            if(randDub < probability) {
+                int city1 = this.tour.get(i);
+                int randIndex = RANDOM_GENERATOR.nextInt(this.problem.getNumCities());
+                int city2 = this.tour.get(randIndex);
+
+                //swap cities in the tour
+                this.tour.set(i, city2);
+                this.tour.set(randIndex, city1);
+            }
+        }
+        this.evalAndSetFitness();
+    }
+
+
     public double getFitness() {
         return this.fitness;
     }
@@ -81,5 +107,7 @@ public class Individual {
         }
         return representation;
     }
+
+
 
 }

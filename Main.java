@@ -82,5 +82,9 @@ public class Main {
 
         Individual offspring = ga.heuristicCrossover(parent1, parent2);
         System.out.println("Offspring: " + offspring + " fitness -> " + offspring.getFitness());
+
+        offspring.mutate(0.01);
+        System.out.println("Offspring: " + offspring + " fitness -> " + offspring.getFitness());
+
     }
 }
