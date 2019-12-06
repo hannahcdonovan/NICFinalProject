@@ -11,8 +11,7 @@ public class Population {
 
     private static Random RANDOM_GENERATOR = new Random();
 
-
-    public Population(Problem problem, int popSize) {
+    public Population(int popSize) {
         this.popSize = popSize;
         individualList = new ArrayList<Individual>();
     }

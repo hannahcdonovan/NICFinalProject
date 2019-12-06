@@ -90,15 +90,15 @@ public class GeneticAlgorithm {
         this.crossoverProb = crossoverProb;
         this.mutationProb = mutationProb;
         this.iterations = iterations;
-        this.currentParentPopulation = new Population(this.problem, popSize);
+        this.currentParentPopulation = new Population(popSize);
         this.currentParentPopulation.generateRandomPopulation(this.problem);
-        this.parentAndOffspringPopulation = new Population(this.problem, popSize * 2);
+        this.parentAndOffspringPopulation = new Population(popSize * 2);
         this.neighborhoodType = neighborhoodType;
     }
 
     public Population boltzmannSelection() {
         List<Individual> offspring = this.parentAndOffspringPopulation.getIndividualList();
-        Population newPop = new Population(this.problem, offspring.size());
+        Population newPop = new Population(offspring.size());
         double totalFitness = 0.0;
 
         // Calculate total fitness
@@ -126,7 +126,7 @@ public class GeneticAlgorithm {
 
     public Population rankSelection() {
         List<Individual> inds = this.parentAndOffspringPopulation.getIndividualList();
-        Population newPop = new Population(this.problem, this.popSize);
+        Population newPop = new Population(this.popSize);
 
         Collections.sort(inds);
 
@@ -158,7 +158,7 @@ public class GeneticAlgorithm {
 
     public Population tournamentSelection() {
         List<Individual> offspringAndParents = this.parentAndOffspringPopulation.getIndividualList();
-        Population newPop = new Population(this.problem, this.popSize);
+        Population newPop = new Population(this.popSize);
 
         Collections.shuffle(offspringAndParents);
 
@@ -212,7 +212,9 @@ public class GeneticAlgorithm {
         System.out.println(this.parentAndOffspringPopulation);
 
         //PSO here
+        System.out.println("STARTING THE PSO NOW");
         PSO pso = new PSO(this.parentAndOffspringPopulation, this.neighborhoodType, 10);
+        System.out.println("PSO OPTIMIZING");
         Population nextPop = pso.optimize();
         System.out.println(this.parentAndOffspringPopulation);
 
