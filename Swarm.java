@@ -204,11 +204,11 @@ public class Swarm {
     }
 
 
-    public void randomizeNeighborhoods() {
+    public void randomizeNeighborhoods(int k) {
         Random gen = new Random();
         for(int i = 0; i < this.individualList.size(); i++) {
             double probabiltyPicker = gen.nextDouble();
-            if(probabiltyPicker < NEIGHBORHOOD_CHANGE_PROB) {
+            if(probabiltyPicker < k) {
                 Neighborhood newNeighborhood = this.pickRandomNeighborhood(this.individualList.get(i), NEIGHBORHOOD_SIZE);
                 Neighborhood oldNeighborhood = this.individualList.get(i).getNeighborhood();
                 this.neighborhoods.remove(oldNeighborhood);

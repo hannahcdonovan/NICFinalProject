@@ -47,6 +47,8 @@ public class GeneticAlgorithm {
      */
     private Population currentParentPopulation;
 
+    private String neighborhoodType;
+
 
     /**
     * The population of offspring and parents used for PSO 
@@ -80,7 +82,7 @@ public class GeneticAlgorithm {
     private static Random RANDOM_GENERATOR = new Random();
 
     public GeneticAlgorithm(int popSize, Problem problem, int numCities, String selectionType, 
-                            double crossoverProb, double mutationProb, int iterations) {
+                            double crossoverProb, double mutationProb, int iterations, String neighborhoodType) {
         this.popSize = popSize;
         this.problem = problem;
         this.numCities = this.problem.getNumCities();
@@ -88,14 +90,15 @@ public class GeneticAlgorithm {
         this.crossoverProb = crossoverProb;
         this.mutationProb = mutationProb;
         this.iterations = iterations;
-        this.currentParentPopulation = new Population(popSize);
+        this.currentParentPopulation = new Population(this.problem, popSize);
         this.currentParentPopulation.generateRandomPopulation(this.problem);
-        this.parentAndOffspringPopulation = new Population(popSize * 2);
+        this.parentAndOffspringPopulation = new Population(this.problem, popSize * 2);
+        this.neighborhoodType = neighborhoodType;
     }
 
     public Population boltzmannSelection() {
         List<Individual> offspring = this.parentAndOffspringPopulation.getIndividualList();
-        Population newPop = new Population(offspring.size());
+        Population newPop = new Population(this.problem, offspring.size());
         double totalFitness = 0.0;
 
         // Calculate total fitness
@@ -123,7 +126,7 @@ public class GeneticAlgorithm {
 
     public Population rankSelection() {
         List<Individual> inds = this.parentAndOffspringPopulation.getIndividualList();
-        Population newPop = new Population(this.popSize);
+        Population newPop = new Population(this.problem, this.popSize);
 
         Collections.sort(inds);
 
@@ -154,16 +157,16 @@ public class GeneticAlgorithm {
 
 
     public Population tournamentSelection() {
-        List<Individual> offspring = this.parentAndOffspringPopulation.getIndividualList();
-        Population newPop = new Population(this.popSize);
+        List<Individual> offspringAndParents = this.parentAndOffspringPopulation.getIndividualList();
+        Population newPop = new Population(this.problem, this.popSize);
 
-        Collections.shuffle(offspring);
+        Collections.shuffle(offspringAndParents);
 
-        for (int i = 0; i < offspring.size() - 1; i += 2) {
-            if (offspring.get(i).getFitness() <= offspring.get(i + 1).getFitness()) {
-                newPop.addIndividual(offspring.get(i));
+        for (int i = 0; i < offspringAndParents.size() - 1; i += 2) {
+            if (offspringAndParents.get(i).getFitness() <= offspringAndParents.get(i + 1).getFitness()) {
+                newPop.addIndividual(offspringAndParents.get(i));
             } else {
-                newPop.addIndividual(offspring.get(i + 1));
+                newPop.addIndividual(offspringAndParents.get(i + 1));
             }
         }
         return newPop;
@@ -184,7 +187,7 @@ public class GeneticAlgorithm {
                 Individual parent1 = this.currentParentPopulation.getIndividual(RANDOM_GENERATOR.nextInt(popSize));
                 Individual parent2 = this.currentParentPopulation.getIndividual(RANDOM_GENERATOR.nextInt(popSize));
 
-                Individual offspring = this.heuristicCrossover(parent1, parent2);
+                Individual offspring = this.currentParentPopulation.heuristicCrossover(parent1, parent2);
                 newOffSpring.add(offspring);
             }
         }
@@ -195,79 +198,9 @@ public class GeneticAlgorithm {
 
     }
 
-    /**
-     * Heuristic Crossover
-     */
-    public Individual heuristicCrossover(Individual parent1, Individual parent2) {
-        Individual offspring = new Individual(this.problem);
-
-        int startingCity = RANDOM_GENERATOR.nextInt(this.numCities);
-
-        List<Integer> tour1 = parent1.getTour();
-        List<Integer> tour2 = parent2.getTour();
-
-        //rotate lists to make the starting city first for both 
-        int tour1RotationAmount = tour1.size() - tour1.indexOf(startingCity);
-        int tour2RotationAmount = tour2.size() - tour2.indexOf(startingCity);
-
-        Collections.rotate(tour1, tour1RotationAmount);
-        Collections.rotate(tour2, tour2RotationAmount);
-
-        //System.out.println("parent 1 - " + parent1 +  " fitness -> " + parent1.getFitness());
-        //System.out.println("parent 2 - " + parent2 +  " fitness -> " + parent2.getFitness());
-
-        // Update the starting cities in both parents tours
-        moveStartingCity(tour1, startingCity);
-        moveStartingCity(tour2, startingCity);
-
-        // initialize offspring tour
-        offspring.initialize(startingCity);
-        
-        List<Integer> offspringTour = offspring.getTour();
-
-        int i = 1;
-        int j = 1;
-        int offspringCounter = 1;
-
-        while ((i < offspringTour.size()) && (j < offspringTour.size())) {
-            if (offspringTour.contains(tour1.get(i)) && offspringTour.contains(tour2.get(j))) {
-                i++;
-                j++;
-            } else if (offspringTour.contains(tour1.get(i))) {
-                offspringTour.set(offspringCounter, tour2.get(j));
-                j++;
-                offspringCounter++;
-            } else if (offspringTour.contains(tour2.get(j))) {
-                offspringTour.set(offspringCounter, tour1.get(i));
-                i++;
-                offspringCounter++;
-            } else {
-                int lastCity = offspringTour.get(numCities - 1);
-                if (this.problem.getDistance(lastCity, tour1.get(i)) < this.problem.getDistance(lastCity, tour2.get(j))) {
-                    offspringTour.set(offspringCounter, tour1.get(i));
-                    i++;
-                    offspringCounter++;
-                } else {
-                    offspringTour.set(offspringCounter, tour2.get(j));
-                    j++;
-                    offspringCounter++;
-                }
-            }
-        }
-
-        offspring.setTour(offspringTour);
-        return offspring;
-
-    }
-
-    private static void moveStartingCity(List<Integer> tour, int startingCity) {
-        int startingCityIndex = tour.indexOf(startingCity);
-        tour.remove(startingCityIndex);
-        tour.add(0, startingCity);
-    }
-
 
     public void optimize() {
+        // Only going to hold the first random pop
         System.out.println(this.currentParentPopulation);
         System.out.println(this.parentAndOffspringPopulation);
 
@@ -278,6 +211,10 @@ public class GeneticAlgorithm {
         System.out.println("** Parent and Offspring Population*");
         System.out.println(this.parentAndOffspringPopulation);
 
+        //PSO here
+        PSO pso = new PSO(this.parentAndOffspringPopulation, this.neighborhoodType, 10);
+        Population nextPop = pso.optimize();
+        System.out.println(this.parentAndOffspringPopulation);
 
 
         Population newPop = this.tournamentSelection();
@@ -289,10 +226,8 @@ public class GeneticAlgorithm {
         System.out.println("** RS Selected Population **");
         System.out.println(newPop2);
 
-
-
-
-
     }
+
+
 
 }

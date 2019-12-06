@@ -130,6 +130,8 @@ public class Individual implements Comparable<Individual> {
         return this.neighborhood;
     }
 
-
+    public Problem getProblem() {
+        return this.problem;
+    }
 
 }
