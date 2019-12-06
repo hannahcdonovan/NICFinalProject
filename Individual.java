@@ -105,9 +105,9 @@ public class Individual implements Comparable<Individual> {
 
     public String toString() {
         String representation = "";
-        for (int i = 0; i < this.problem.getNumCities(); i++) {
-            representation += tour.get(i) + ".";
-        }
+       //for (int i = 0; i < this.problem.getNumCities(); i++) {
+         //   representation += tour.get(i) + ".";
+        //}
         representation += " -> " + this.fitness;
         return representation;
     }

@@ -33,13 +33,11 @@ public class PSO {
         this.makeNeighborhood();
         List<Neighborhood> neighborhoodList = this.swarm.getNeighborhoods();
         for (int i = 0; i < this.iterations; i++) {
-            System.out.println(this.swarm.getNeighborhoods().size());
             for (Neighborhood neighborhood: this.swarm.getNeighborhoods()) {
                 neighborhood.updateBest();
             }
             for (Individual ind : this.swarm.getIndividuals()) {
 
-                System.out.println(ind);
                 Individual best = ind.getNeighborhood().getNeighborhoodBest();
                 Individual offspring = this.population.heuristicCrossover(ind, best);
                 ind.setTour(offspring.getTour());

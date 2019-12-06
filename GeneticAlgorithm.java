@@ -130,7 +130,7 @@ public class GeneticAlgorithm {
 
         Collections.sort(inds);
 
-        System.out.println(this.parentAndOffspringPopulation);
+        //System.out.println(this.parentAndOffspringPopulation);
 
         List<Individual> probScaleList = new ArrayList<Individual>();
 
@@ -238,30 +238,17 @@ public class GeneticAlgorithm {
 
         for(int i = 0; i < this.iterations; i++) {
             // Only going to hold the first random pop
-            System.out.println(this.currentParentPopulation);
-            System.out.println(this.parentAndOffspringPopulation);
 
             this.performParentCrossover();
-            System.out.println("** Parent Population **");
-            System.out.println(this.currentParentPopulation);
-
-            System.out.println("** Parent and Offspring Population*");
-            System.out.println(this.parentAndOffspringPopulation);
 
             //PSO here
-            System.out.println("STARTING THE PSO NOW");
             PSO pso = new PSO(this.parentAndOffspringPopulation, this.neighborhoodType, 5);
-            System.out.println("PSO OPTIMIZING");
             pso.optimize();
             this.executeMutation();
 
             Population result = this.doSelection();
-            System.out.println("NEW PARENTS");
-            System.out.println(result);
 
             Individual bestInPop = this.findBestInPop(result);
-            System.out.println("BEST IN POP LOOKING AT IT ");
-            System.out.println(bestInPop);
             if(bestInPop.getFitness() < bestFitnessSoFar) {
                 bestFitnessSoFar = bestInPop.getFitness();
                 bestIndividualSoFar = bestInPop.copyIndividual();
@@ -269,7 +256,7 @@ public class GeneticAlgorithm {
 
             this.currentParentPopulation = result;
 
-            System.out.println("BEST SO FAR AT THIS POINT NOW -> " + bestIndividualSoFar);
+            System.out.println(i + " BEST -> " + bestIndividualSoFar);
 
         }
 
