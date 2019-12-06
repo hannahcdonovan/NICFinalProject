@@ -78,7 +78,7 @@ public class Main {
         System.out.println("Parent 2: " + parent2);
 
 
-        GeneticAlgorithm ga = new GeneticAlgorithm(8, prob, numCities, "selection", 0.1, 0.1, 10, "vn");
+        GeneticAlgorithm ga = new GeneticAlgorithm(8, prob, numCities, "ts", 0.1, 0.1, 10, "vn");
 
         // Individual offspring = ga.heuristicCrossover(parent1, parent2);
         // System.out.println("Offspring: " + offspring);

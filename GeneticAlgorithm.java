@@ -198,27 +198,84 @@ public class GeneticAlgorithm {
 
     }
 
+    public void executeMutation() {
+        for(Individual ind : this.parentAndOffspringPopulation.getIndividualList()) {
+            ind.mutate(this.mutationProb);
+        }
+    }
+
+    public Population doSelection() {
+
+        if(this.selectionType.equals("ts")) {
+            return this.tournamentSelection();
+        } else if(this.selectionType.equals("rs")) {
+            return this.rankSelection();
+        } else {
+            return this.boltzmannSelection();
+        }
+    }
+
+
+    public Individual findBestInPop(Population pop) {
+
+        Individual bestSoFar = new Individual(this.problem);
+        double bestScoreSoFar = Double.POSITIVE_INFINITY;
+
+        for(Individual ind : pop.getIndividualList()) {
+            if(ind.getFitness() < bestScoreSoFar) {
+                bestScoreSoFar = ind.getFitness();
+                bestSoFar = ind.copyIndividual();
+            }
+        }
+        return bestSoFar;
+    }
+
 
     public void optimize() {
-        // Only going to hold the first random pop
-        System.out.println(this.currentParentPopulation);
-        System.out.println(this.parentAndOffspringPopulation);
 
-        this.performParentCrossover();
-        System.out.println("** Parent Population **");
-        System.out.println(this.currentParentPopulation);
+        Individual bestIndividualSoFar = new Individual(this.problem);
+        double bestFitnessSoFar = Double.POSITIVE_INFINITY;
 
-        System.out.println("** Parent and Offspring Population*");
-        System.out.println(this.parentAndOffspringPopulation);
+        for(int i = 0; i < this.iterations; i++) {
+            // Only going to hold the first random pop
+            System.out.println(this.currentParentPopulation);
+            System.out.println(this.parentAndOffspringPopulation);
 
-        //PSO here
-        System.out.println("STARTING THE PSO NOW");
-        PSO pso = new PSO(this.parentAndOffspringPopulation, this.neighborhoodType, 10);
-        System.out.println("PSO OPTIMIZING");
-        Population nextPop = pso.optimize();
-        System.out.println(this.parentAndOffspringPopulation);
+            this.performParentCrossover();
+            System.out.println("** Parent Population **");
+            System.out.println(this.currentParentPopulation);
+
+            System.out.println("** Parent and Offspring Population*");
+            System.out.println(this.parentAndOffspringPopulation);
+
+            //PSO here
+            System.out.println("STARTING THE PSO NOW");
+            PSO pso = new PSO(this.parentAndOffspringPopulation, this.neighborhoodType, 5);
+            System.out.println("PSO OPTIMIZING");
+            pso.optimize();
+            this.executeMutation();
+
+            Population result = this.doSelection();
+            System.out.println("NEW PARENTS");
+            System.out.println(result);
+
+            Individual bestInPop = this.findBestInPop(result);
+            System.out.println("BEST IN POP LOOKING AT IT ");
+            System.out.println(bestInPop);
+            if(bestInPop.getFitness() < bestFitnessSoFar) {
+                bestFitnessSoFar = bestInPop.getFitness();
+                bestIndividualSoFar = bestInPop.copyIndividual();
+            }
+
+            this.currentParentPopulation = result;
+
+            System.out.println("BEST SO FAR AT THIS POINT NOW -> " + bestIndividualSoFar);
+
+        }
 
 
+
+/*
         Population newPop = this.tournamentSelection();
         System.out.println("** TS Selected Population **");
         System.out.println(newPop);
@@ -227,6 +284,7 @@ public class GeneticAlgorithm {
         Population newPop2 = this.rankSelection();
         System.out.println("** RS Selected Population **");
         System.out.println(newPop2);
+        */
 
     }
 

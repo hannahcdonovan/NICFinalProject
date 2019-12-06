@@ -29,7 +29,7 @@ public class PSO {
         }
     }
 
-    public Population optimize() {
+    public void optimize() {
         this.makeNeighborhood();
         List<Neighborhood> neighborhoodList = this.swarm.getNeighborhoods();
         for (int i = 0; i < this.iterations; i++) {
@@ -45,7 +45,6 @@ public class PSO {
                 ind.setTour(offspring.getTour());
             }
         }
-        return this.population;
     }
 
 }
