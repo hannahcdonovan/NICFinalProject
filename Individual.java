@@ -62,21 +62,17 @@ public class Individual implements Comparable<Individual> {
      * with some other random city. This will add some randomness but will also maintain the 
      * integrity of the tour. 
      */
-    public void mutate(double probability) {
+    public void mutate() {
 
-        for(int i = 0; i < this.problem.getNumCities(); i++) {
-            double randDub = RANDOM_GENERATOR.nextDouble();
+        int randIndex = RANDOM_GENERATOR.nextInt(this.problem.getNumCities());
+        int city1 = this.tour.get(randIndex);
 
-            if(randDub < probability) {
-                int city1 = this.tour.get(i);
-                int randIndex = RANDOM_GENERATOR.nextInt(this.problem.getNumCities());
-                int city2 = this.tour.get(randIndex);
+        int randIndex2 = RANDOM_GENERATOR.nextInt(this.problem.getNumCities());
+        int city2 = this.tour.get(randIndex2);
 
-                //swap cities in the tour
-                this.tour.set(i, city2);
-                this.tour.set(randIndex, city1);
-            }
-        }
+        this.tour.set(randIndex, city2);
+        this.tour.set(randIndex2, city1);
+
         this.evalAndSetFitness();
     }
 

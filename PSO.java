@@ -22,10 +22,10 @@ public class PSO {
             this.swarm.makeVonNeumannNeighborhood();
         } else if (neighborhoodType.equals("gl")) {
             this.swarm.makeGlobalNeighborhood();
-        } else if (neighborhoodType.equals("rand")) {
+        } else if (neighborhoodType.equals("ra")) {
             this.swarm.makeRandomNeighborhood(5);
-        } else if (neighborhoodType.equals("global")) {
-            this.swarm.makeGlobalNeighborhood();
+        } else if (neighborhoodType.equals("ri")) {
+            this.swarm.makeRingNeighborhood();
         }
     }
 

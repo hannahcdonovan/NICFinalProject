@@ -60,7 +60,7 @@ public class Main {
     }
     
     public static void main(String[] args) {
-        List<City> cityList = getCityList("tsp225.tsp");
+        List<City> cityList = getCityList("pr1002.tsp");
         // System.out.println(cityList);
         Problem prob = new Problem(cityList);
         int numCities = prob.getNumCities();
@@ -81,7 +81,7 @@ public class Main {
 
 		*/
 
-        GeneticAlgorithm ga = new GeneticAlgorithm(50, prob, numCities, "rs", 0.8, 0.001, 1500, "vn");
+        GeneticAlgorithm ga = new GeneticAlgorithm(72, prob, numCities, "ts", 0.8, 0.01, 10000, "vn", 5);
 
         // Individual offspring = ga.heuristicCrossover(parent1, parent2);
         // System.out.println("Offspring: " + offspring);
