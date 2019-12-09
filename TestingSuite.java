@@ -17,6 +17,7 @@ public class TestingSuite {
 	public String TESTNAME442 = "pcb442.tsp";
 	public String TESTNAME657 = "d657.tsp";
 	public String TESTNAME1000 = "pr1002.tsp";
+	public String TESTNAME2103 = "d2103.tsp";
 
 
 	public String DEFAULT_SELECTION = "rs";
@@ -202,17 +203,8 @@ public class TestingSuite {
 	}
 
 
-
-
-
-	public void runTestsOnDifferentProblems() {
-
-	}
-
-
-
 	public void runManyTestsForSpecificParams(String topology, String selectionType, int individualNum, int psoIterations, double mutationProb){
-		String[] problemsList = new String[]{TESTNAME76, TESTNAME225, TESTNAME442, TESTNAME657, TESTNAME1000};
+		String[] problemsList = new String[]{TESTNAME76, TESTNAME225, TESTNAME442, TESTNAME657, TESTNAME1000, TESTNAME2103};
 		List<List<Double>> resultsList = new ArrayList<List<Double>>();
 
 		for(int k = 0; k < problemsList.length; k++) {
