@@ -379,7 +379,7 @@ public class TestingSuite {
 
 		TestingSuite testSuite = new TestingSuite();
 
-		//testSuite.runTestsWrapper();
+		testSuite.runTestsWrapper();
 
 		testSuite.runManyTestsForSpecificParams("ra", "rs", 18, 5, 0.1);
 
