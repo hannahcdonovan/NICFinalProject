@@ -75,8 +75,8 @@ public class Main {
         parent1 = parent1.makeRandomIndividual();
         System.out.println("Parent 1: " + parent1);
 
-        Individual parent2 = new Individual(prob);
-        parent2 = parent2.makeRandomIndividual();
+        Individual parent2 = parent1.copyIndividual();
+        //parent2 = parent2.makeRandomIndividual();
         System.out.println("Parent 2: " + parent2);
 
 		Population pop = new Population(2);

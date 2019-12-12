@@ -292,12 +292,12 @@ public class TestingSuite {
 	 */
 	public void runManyTestsForSpecificParams(String topology, String selectionType, int populationSize,
 			int psoIterations, double mutationProb) {
-		String[] problemsList = new String[] { TESTNAME76, TESTNAME225, TESTNAME442, TESTNAME657, TESTNAME1000,
-				TESTNAME2103 };
+		String[] problemsList = new String[] {TESTNAME76, TESTNAME225, TESTNAME442, TESTNAME657};
 		List<List<Double>> resultsList = new ArrayList<List<Double>>();
 
 		for (int k = 0; k < problemsList.length; k++) {
 			List<List<Double>> listOfFitnessLists = new ArrayList<List<Double>>();
+			System.out.println("START TEST FOR " + problemsList[k]);
 			for (int i = 0; i < 10; i++) {
 				List<Double> fitnessList = this.runTestWithParams(problemsList[k], mutationProb, populationSize,
 						selectionType, topology, psoIterations);
@@ -305,6 +305,8 @@ public class TestingSuite {
 			}
 			List<Double> processedMedians = processList(listOfFitnessLists);
 			resultsList.add(processedMedians);
+			System.out.println("TEST RESULTS FOR " + problemsList[k]);
+			printList(processedMedians);
 
 		}
 
@@ -377,9 +379,9 @@ public class TestingSuite {
 
 		TestingSuite testSuite = new TestingSuite();
 
-		// testSuite.runTestsWrapper();
+		//testSuite.runTestsWrapper();
 
-		testSuite.runManyTestsForSpecificParams("ra", "rs", 72, 20, 0.1);
+		testSuite.runManyTestsForSpecificParams("ra", "rs", 18, 5, 0.1);
 
 	}
 

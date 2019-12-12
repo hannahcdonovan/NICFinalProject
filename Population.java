@@ -49,6 +49,9 @@ public class Population {
         List<Integer> tour1 = parent1.getTour();
         List<Integer> tour2 = parent2.getTour();
 
+        Individual copy1 = parent1.copyIndividual();
+        Individual copy2 = parent2.copyIndividual();
+
         //rotate lists to make the starting city first for both 
         int tour1RotationAmount = tour1.size() - tour1.indexOf(startingCity);
         int tour2RotationAmount = tour2.size() - tour2.indexOf(startingCity);

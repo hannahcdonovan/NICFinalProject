@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Individual implements Comparable<Individual> {
 
@@ -79,6 +80,7 @@ public class Individual implements Comparable<Individual> {
         // Calculate the fitness of the Individual after we have constructed it and return it
         randIndividual.evalAndSetFitness();
         return randIndividual;
+
     }
 
     /**
@@ -137,8 +139,12 @@ public class Individual implements Comparable<Individual> {
      * 
      * @param newTour The tour we want to set the Individual's tour to.
      */
-    public void setTour(List<Integer> newTour) {
+    public void setTour(List<Integer> sourceTour) {
+
+        List<Integer> newTour = new ArrayList<Integer>();
+        newTour.addAll(sourceTour); 
         this.tour = newTour;
+
         this.evalAndSetFitness();
     }
 

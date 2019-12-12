@@ -101,8 +101,14 @@ public class GeneticAlgorithm {
         while (newOffSpring.size() < this.popSize) {
 
             // Randomly choose two parents to cross
-            Individual parent1 = this.currentParentPopulation.getIndividual(RANDOM_GENERATOR.nextInt(popSize));
-            Individual parent2 = this.currentParentPopulation.getIndividual(RANDOM_GENERATOR.nextInt(popSize));
+            int index1 = RANDOM_GENERATOR.nextInt(popSize);
+            int index2 = RANDOM_GENERATOR.nextInt(popSize);
+
+            while(index2 == index1) {
+                index2 = RANDOM_GENERATOR.nextInt(popSize);
+            }
+            Individual parent1 = this.currentParentPopulation.getIndividual(index1);
+            Individual parent2 = this.currentParentPopulation.getIndividual(index2);
 
             // Perform the crossover & add it to the offspring list
             Individual offspring = this.currentParentPopulation.heuristicCrossover(parent1, parent2);
@@ -292,7 +298,6 @@ public class GeneticAlgorithm {
             }
 
         }
-
         return fitnessResultsList;
     }
 }
