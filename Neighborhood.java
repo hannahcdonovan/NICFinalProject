@@ -14,8 +14,9 @@ public class Neighborhood {
     private Individual neighborhoodBest;
 
     /**
-     * Constructor for the Neighborhood object. Essentially a wrapper for a list of Particles that
-     * represent a neighborhood.
+     * Constructor for the Neighborhood object. Essentially a wrapper for a list of
+     * Particles that represent a neighborhood.
+     * 
      * @param neighborList List used to instantiate Neighborhood object.
      */
     public Neighborhood(List<Individual> neighborList) {
@@ -23,8 +24,10 @@ public class Neighborhood {
     }
 
     /**
-     * Sets the neighborhood best to a copy of the particle's (because the particle is changing over time)
-     * position and calling evaluate on particle because .evaluate sets the current score of the particle. 
+     * Sets the neighborhood best to a copy of the particle's (because the particle
+     * is changing over time) position and calling evaluate on particle because
+     * .evaluate sets the current score of the particle.
+     * 
      * @param currBest A particle representing the iteration's new best.
      */
     public void setNeighborhoodBest(Individual newBest) {
@@ -32,7 +35,8 @@ public class Neighborhood {
     }
 
     /**
-     * Updates the neighborhood best for each particle's neighborhood on each iteration. 
+     * Updates the neighborhood best for each particle's neighborhood on each
+     * iteration.
      */
     public void updateBest() {
 
@@ -47,13 +51,14 @@ public class Neighborhood {
                 currBestFitness = fitness;
             }
         }
-        if(this.neighborhoodBest == null || currBestFitness < this.neighborhoodBest.getFitness()) {
-        	this.setNeighborhoodBest(currBestIndividual);
+        if (this.neighborhoodBest == null || currBestFitness < this.neighborhoodBest.getFitness()) {
+            this.setNeighborhoodBest(currBestIndividual);
         }
     }
 
     /**
      * Getter that returns the nbest for a given Neighborhood object.
+     * 
      * @return Particle, which is the best particle in the neighborhood.
      */
     public Individual getNeighborhoodBest() {

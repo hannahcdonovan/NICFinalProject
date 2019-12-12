@@ -1,8 +1,6 @@
 
-
 import java.util.List;
 import java.util.ArrayList;
-
 
 public class Problem {
 
@@ -10,7 +8,10 @@ public class Problem {
 	private int size;
 	private double[][] distances;
 
-	
+	/**
+	 * Problem constructor. Essentially a package containing all relevant problem information.
+	 * @param cityList A list containing all the City objects. Created when we read in the problem file. 
+	 */
 	public Problem(List<City> cityList) {
 
 		this.cityList = cityList;
@@ -19,11 +20,10 @@ public class Problem {
 		this.calculateDistances();
 	}
 
-
 	/**
-     * Calculates distances and populates the distances matrix with appropriate heuristic information.
-     * 
-     */
+	 * Calculates distances and populates the distances matrix based
+	 * on Eucledian distance between nodes.
+	 */
 	public void calculateDistances() {
 
 		for (int i = 0; i < this.cityList.size(); i++) {
@@ -50,32 +50,32 @@ public class Problem {
 		}
 	}
 
+	/****************************** GETTERS AND SETTERS *******************************************************/
 
-    /**
-     * Problem size getter.
-     * 
-     * @return the size of the Problem, which is the number of cities.
-     */
+	/**
+	 * Problem size getter.
+	 * 
+	 * @return the size of the Problem, which is the number of cities.
+	 */
 	public int getNumCities() {
 		return this.size;
 	}
 
-
-    /**
-     * cityList getter.
-     * 
-     * @return the List containing all of the cities in the problem.
-     */
+	/**
+	 * cityList getter.
+	 * 
+	 * @return the List containing all of the cities in the problem.
+	 */
 	public List<City> getCityList() {
 		return this.cityList;
 	}
 
-
-    /**
-     * Distance getter.
-     * 
-     * @return a double representing the distance between the two given city numbers according to the heuristic.
-     */
+	/**
+	 * Distance getter.
+	 * 
+	 * @return a double representing the distance between the two given city numbers
+	 *         according to the distance matrix.
+	 */
 	public double getDistance(int city1, int city2) {
 		return this.distances[city1][city2];
 	}

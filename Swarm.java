@@ -9,38 +9,29 @@ import java.util.List;
 
 public class Swarm {
 
-
     /*
      * List containing all of the Particles in the Swarm
      */
     private Population parentAndOffspringPopulation;
 
-
     /*
      * The number of particles in the Swarm
      */
-    private int numIndividuals; 
-
+    private int numIndividuals;
 
     /*
      * List containing all of the Neighborhoods that comprise the Swarm
      */
     private List<Neighborhood> neighborhoods;
 
-
     private List<Individual> individualList;
-
-
-    private final double NEIGHBORHOOD_CHANGE_PROB = 0.2;
 
     final int NEIGHBORHOOD_SIZE = 5;
 
-
-
-    /* 
-     *   Constructor which creates a Swarm with numParticles number of particles. 
+    /*
+     * Constructor which creates a Swarm with numParticles number of particles.
      *
-     *   @param numParticles - the number of Particles in the Swarm
+     * @param numParticles - the number of Particles in the Swarm
      */
     public Swarm(Population parentAndOffspringPopulation) {
         this.numIndividuals = parentAndOffspringPopulation.size();
@@ -49,13 +40,13 @@ public class Swarm {
         neighborhoods = new ArrayList<Neighborhood>();
     }
 
-
     /*
-     * Creates neighborhoods that conform to a ring topology. This means that the particles 
-     * are imagined to be in a ring and each particle's neighborhood is comprised of the 
-     * particle to its left, the particle to its right, and itself. This method will create a 
-     * neighborhood for each particle in the Swarm and add it to neighborhoods
-     */    
+     * Creates neighborhoods that conform to a ring topology. This means that the
+     * particles are imagined to be in a ring and each particle's neighborhood is
+     * comprised of the particle to its left, the particle to its right, and itself.
+     * This method will create a neighborhood for each particle in the Swarm and add
+     * it to neighborhoods
+     */
     public void makeRingNeighborhood() {
 
         if (numIndividuals > 2) {
@@ -86,15 +77,16 @@ public class Swarm {
         }
     }
 
-
     /*
-     * Creates neighborhoods for the Swarm which conform to the Von Neumann topology. This means that
-     * the particles can be imagined as arranged in a grid. Each particle's neighborhood is comprised
-     * of the particle to its left, the particle to its right, the particle above it, the particle below
-     * it, and itself. This grid is imagined as wrapped around, where the particle "above" a particle in the 
-     * top row is the particle in the same column in the bottom row. Similarly, the particle to the "right" of 
-     * a particle in the rightmost column is the particle on the leftmost column of this same row. A
-     * neighborhood is created for each particle and added to neighborhoods. 
+     * Creates neighborhoods for the Swarm which conform to the Von Neumann
+     * topology. This means that the particles can be imagined as arranged in a
+     * grid. Each particle's neighborhood is comprised of the particle to its left,
+     * the particle to its right, the particle above it, the particle below it, and
+     * itself. This grid is imagined as wrapped around, where the particle "above" a
+     * particle in the top row is the particle in the same column in the bottom row.
+     * Similarly, the particle to the "right" of a particle in the rightmost column
+     * is the particle on the leftmost column of this same row. A neighborhood is
+     * created for each particle and added to neighborhoods.
      */
     public void makeVonNeumannNeighborhood() {
 
@@ -119,7 +111,6 @@ public class Swarm {
                 }
             }
         }
-
 
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numColumns; j++) {
@@ -154,11 +145,10 @@ public class Swarm {
         }
     }
 
-
     /*
-     * Creates a Neighborhood for each Particle according to global topology. This means that each
-     * particle's neighborhood is every Particle in the Swarm, including itself Therefore, each 
-     * Particle has the same Neighborhood. 
+     * Creates a Neighborhood for each Particle according to global topology. This
+     * means that each particle's neighborhood is every Particle in the Swarm,
+     * including itself Therefore, each Particle has the same Neighborhood.
      */
     public void makeGlobalNeighborhood() {
 
@@ -170,11 +160,11 @@ public class Swarm {
         neighborhoods.add(globalNeighborhood);
     }
 
-
     /*
-     * This creates a Neighborhood for each Particle in the Swarm according to a random topology. This 
-     * means that each Particle has a Neighborhood comprised of k random other unique Particles in the 
-     * Swarm. A Neighborhood is created for each Particle and added to neighborhoods
+     * This creates a Neighborhood for each Particle in the Swarm according to a
+     * random topology. This means that each Particle has a Neighborhood comprised
+     * of k random other unique Particles in the Swarm. A Neighborhood is created
+     * for each Particle and added to neighborhoods
      * 
      */
     public void makeRandomNeighborhood(int k) {
@@ -203,13 +193,13 @@ public class Swarm {
         }
     }
 
-
     public void randomizeNeighborhoods(int k) {
         Random gen = new Random();
-        for(int i = 0; i < this.individualList.size(); i++) {
+        for (int i = 0; i < this.individualList.size(); i++) {
             double probabiltyPicker = gen.nextDouble();
-            if(probabiltyPicker < k) {
-                Neighborhood newNeighborhood = this.pickRandomNeighborhood(this.individualList.get(i), NEIGHBORHOOD_SIZE);
+            if (probabiltyPicker < k) {
+                Neighborhood newNeighborhood = this.pickRandomNeighborhood(this.individualList.get(i),
+                        NEIGHBORHOOD_SIZE);
                 Neighborhood oldNeighborhood = this.individualList.get(i).getNeighborhood();
                 this.neighborhoods.remove(oldNeighborhood);
                 this.individualList.get(i).setNeighborhood(newNeighborhood);
@@ -223,24 +213,23 @@ public class Swarm {
         List<Individual> neighborhoodList = new ArrayList<Individual>();
         Set<Integer> numSet = new HashSet<Integer>();
 
-            neighborhoodList.add(p);
-            numSet.clear();
+        neighborhoodList.add(p);
+        numSet.clear();
 
-            for (int j = 0; j < k; j++) {
-                int randNum = rand.nextInt(this.individualList.size());
+        for (int j = 0; j < k; j++) {
+            int randNum = rand.nextInt(this.individualList.size());
 
-                while (numSet.contains(randNum)) {
-                    randNum = rand.nextInt(this.individualList.size());
-                }
-
-                numSet.add(randNum);
-                neighborhoodList.add(this.individualList.get(randNum));
+            while (numSet.contains(randNum)) {
+                randNum = rand.nextInt(this.individualList.size());
             }
+
+            numSet.add(randNum);
+            neighborhoodList.add(this.individualList.get(randNum));
+        }
 
         Neighborhood newNeighborhood = new Neighborhood(neighborhoodList);
         return newNeighborhood;
     }
-
 
     /*
      * This returns the List of Neighborhoods that comprise the Swarm
@@ -248,7 +237,6 @@ public class Swarm {
     public List<Neighborhood> getNeighborhoods() {
         return this.neighborhoods;
     }
-
 
     /*
      * This return the List of Particles that comprise the Swarm

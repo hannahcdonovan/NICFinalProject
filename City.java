@@ -1,4 +1,4 @@
-  
+
 public class City {
 
     private int id;
