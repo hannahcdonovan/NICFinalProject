@@ -84,7 +84,6 @@ public class Population {
             // distance from the city that was just added
             } else {
                 int lastCity = offspringTour.get(offspringCounter - 1);
-                System.out.println(lastCity);
                 if (problem.getDistance(lastCity, tour1.get(i)) < problem.getDistance(lastCity, tour2.get(j))) {
                     offspringTour.set(offspringCounter, tour1.get(i));
                     i++;
